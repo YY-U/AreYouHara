@@ -37,6 +37,9 @@
 		"ms-python.vscode-pylance"
 	],
 
+	// When run docker at server, use this
+	"appPort": ["8501:8501"],
+
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
