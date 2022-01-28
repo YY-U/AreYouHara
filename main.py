@@ -12,9 +12,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 face_dir = "hara"
 
 embeddings = [] # 顔ベクトル（顔特徴量）
-imgs = [] # 顔領域を切り取ったもの
-detector = MTCNN() # 顔領域の検出器
-embedder = FaceNet() # FaceNetモデル
+file_paths = []
+facenet = FaceNet() # FaceNetモデル
 
 def extract(face, img):
     x,y,width,hight = face['box']
@@ -24,16 +23,15 @@ files = os.listdir(face_dir) # ディレクトリ のファイルリストを取
 for file in files:
     file_path = os.path.join(face_dir, file)
     print(file_path)
-    img = cv2.imread(file_path) # 画像読み込み
-    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # RGB形式に変換
-    faces = detector.detect_faces(img_rgb) # 顔領域を検出．画像中に複数の顔が検出されることも想定する
-    max_face = max(faces, key=lambda face:face['box'][2]*face['box'][3])
-    embedding = embedder.embeddings([extract(max_face, img)]) # 潜在変数表現に変換
 
-    embeddings.append(embedding[0])
-    imgs.append(extract(max_face, img)) # 顔領域を保存しておく
+    extracts = facenet.extract(file_path)
+    if len(extracts) < 1:
+        continue
+    max_extract = max(extracts, key=lambda x:x['box'][2]*x['box'][3])
+    embeddings.append(max_extract['embedding']) 
 
-for i,img in enumerate(imgs):
-    cv2.imwrite(f'extracted_hara/{i}.jpg', img)
+    file_paths.append(file_path)
+
+np.save('file_paths', np.array(file_paths))
 
 np.save('embeddings_hara', np.array(embeddings).mean(axis=0))
