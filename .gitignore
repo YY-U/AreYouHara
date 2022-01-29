@@ -2,3 +2,4 @@ hara/
 .DS_Store
 .vscode/
 streamlit_env
+__pycache__

@@ -3,6 +3,8 @@ from PIL import Image, ImageOps
 import numpy as np
 from keras_facenet import FaceNet
 
+from image_utils import distance_to_similarity
+
 
 st.title('Similarity with Hara')
 st.write("早速あなたの顔の画像をアップロードしてみましょう")
@@ -29,7 +31,9 @@ if uploaded_file is not None:
         embed_img = max_extract['embedding']
 
         distance = facenet.compute_distance(embeddings_hara, embed_img)
-        st.subheader(distance)
+        similarity = distance_to_similarity(distance)
+        st.subheader(f'Similarity : {round(similarity)} %')
+        st.text(f'distance : {distance}')
 
         # 切り取った顔画像を取得
         x,y,width,hight = max_extract['box']
