@@ -1,11 +1,7 @@
-# from mira.detectors import FasterRCNN
-from mtcnn import MTCNN
 from keras_facenet import FaceNet
-from PIL import Image
 import numpy as np
-import cv2
-import matplotlib.pyplot as plt
 import os
+from tqdm import tqdm
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
@@ -20,9 +16,8 @@ def extract(face, img):
     return img[y:y+hight, x:x+width]
 
 files = os.listdir(face_dir) # ディレクトリ のファイルリストを取得
-for file in files:
+for file in tqdm(files):
     file_path = os.path.join(face_dir, file)
-    print(file_path)
 
     extracts = facenet.extract(file_path)
     if len(extracts) < 1:
