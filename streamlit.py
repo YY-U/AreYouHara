@@ -16,6 +16,14 @@ embeddings_hara = np.load('embeddings_hara.npy') # 顔ベクトルの読み込�
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert('RGB')
     image = ImageOps.exif_transpose(image)  # 画像を適切な向きに補正する
+    print(image.size)
+
+    if image.width > 960 or image.height >540:
+         #image = image.resize((960,540),Image.BICUBIC)
+          image = image.resize((image.width//2,image.height//2),Image.BICUBIC)
+          print(image.size)
+
+
     img_array = np.array(image)
 
     extracts = facenet.extract(img_array)
