@@ -35,5 +35,3 @@ if uploaded_file is not None:
         img_array, caption='upload images',
         use_column_width=True
     )
-
-# aaaa
