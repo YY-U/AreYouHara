@@ -1,7 +1,5 @@
-from ast import Continue
 import streamlit as st
 from PIL import Image
-import io 
 import numpy as np
 from keras_facenet import FaceNet
 
